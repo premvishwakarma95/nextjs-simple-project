@@ -26,7 +26,7 @@ const register = async (req, res) => {
             sendVerificationCode(email, code)
         }
 
-        return res.status(200).json({success: true, message: 'you registered successfully'});
+        return res.status(200).json({success: true, message: 'you registered successfully now please check your mail'});
     } catch (error) {
         return res.status(500).json({success: false, message: 'server error'});
     }

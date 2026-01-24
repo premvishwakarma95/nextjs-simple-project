@@ -4,9 +4,12 @@ import { authData } from "@/lib/type";
 import { authApi } from "@/services/apis";
 import toast from 'react-hot-toast';
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function page() {
     const [userData, setUserData] = useState<authData>({ email: '', password: '' });
+
+    const router = useRouter();
 
     const onChangeFunction = (e: any) => {
         setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -16,17 +19,18 @@ export default function page() {
         try {
             if (!userData.email || !userData.password) {
                 return toast.error('please provide email and password');
-            } else if(!userData.email.includes('@')) {
+            } else if (!userData.email.includes('@')) {
                 return toast.error('please provide valid email');
             }
 
             const response: any = await axios.post(authApi.loginApi, userData);
 
-            if(response?.data?.success) {
+            if (response?.data?.success) {
                 let authData = response.data;
-                localStorage.setItem('token', authData.token);
-                localStorage.setItem('userId', authData.userId);
+                document.cookie = `token=${authData.token}; max-age=${23 * 60 * 60}; path=/`;
+                document.cookie = `userId=${authData.userId}; max-age=${23 * 60 * 60}; path=/`;
                 toast.success(response?.data?.message || 'you are logged in successfully');
+                router.replace("/dashboard");
             }
         } catch (error: any) {
             console.log(error);
@@ -35,7 +39,7 @@ export default function page() {
     }
 
     return (
-        <div className='min-w-full min-h-[100vh] flex justify-center items-center bg-white'>
+        <div className='min-w-full min-h-[91vh] flex justify-center items-center bg-white'>
             <div className='max-w-[400px] p-4 rounded shadow-2xl bg-white'>
                 <h1 className='text-center text-gray-900 text-xl font-semibold'>Login</h1>
                 <div className='my-5'>
@@ -49,7 +53,7 @@ export default function page() {
                     </div>
                 </div>
                 <div className='flex justify-center'>
-                    <button onClick={login} className='rounded p-2 bg-blue-600 '>Submit</button>
+                    <button onClick={login} className='rounded p-2 bg-blue-600 text-white'>Submit</button>
                 </div>
             </div>
         </div>
