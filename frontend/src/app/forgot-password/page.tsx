@@ -1,6 +1,5 @@
 'use client'
 import { useState } from "react"
-import { authData } from "@/lib/type";
 import { authApi } from "@/services/apis";
 import toast from 'react-hot-toast';
 import axios from "axios";
@@ -9,29 +8,30 @@ import Link from "next/link";
 
 export default function page() {
     const [email, setEmail] = useState<string>('');
+    const [loader, setLoader] = useState<boolean>(false);
 
     const router = useRouter();
 
-    const login = async () => {
+    const forgetPassword = async () => {
         try {
             if (!email) {
                 return toast.error('please provide email');
             } else if (!email.includes('@')) {
                 return toast.error('please provide valid email');
             }
-
-            const response: any = await axios.post(authApi.loginApi, { email });
+            setLoader(true);
+            const response: any = await axios.post(authApi.forgotPasswordApi, { email });
 
             if (response?.data?.success) {
                 let authData = response.data;
-                // document.cookie = `token=${authData.token}; max-age=${23 * 60 * 60}; path=/`;
-                // document.cookie = `userId=${authData.userId}; max-age=${23 * 60 * 60}; path=/`;
-                // toast.success(response?.data?.message || 'you are logged in successfully');
-                // router.replace("/dashboard");
+                toast.success(authData?.message || 'we have sent email to you please check your inbox');
+                router.replace("/login");
             }
         } catch (error: any) {
             console.log(error);
             toast.error(error?.response?.data?.message || 'server error');
+        } finally {
+            setLoader(false);
         }
     }
 
@@ -44,11 +44,30 @@ export default function page() {
                     <p className="text-center text-gray-700 mb-4 text-sm">Enter your email and we'll send you a link to reset your password.</p>
                     <div className="mt-4">
                         <label className='text-gray-900 text-[16px]'>Enter email <span className='text-red-500'>*</span></label>
-                        <input type='email' name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder='enter your email' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
+                        <input type='email' name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder='Enter your email' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
                     </div>
                 </div>
-                <div className='flex justify-center'>
-                    <button onClick={login} className='rounded py-2 px-4 mt-4 bg-blue-600 text-white'>Submit</button>
+                <div className="flex justify-center">
+                    <button
+                        onClick={forgetPassword}
+                        disabled={loader}
+                        className={`flex items-center justify-center gap-2 rounded-md bg-blue-600 px-6 py-2 text-white font-medium
+      transition-all duration-200
+      hover:bg-blue-700
+      disabled:cursor-not-allowed disabled:opacity-70`}
+                    >
+                        {loader ? (
+                            <>
+                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                                Processing...
+                            </>
+                        ) : (
+                            "Submit"
+                        )}
+                    </button>
+                </div>
+                <div className="mt-4 text-center">
+                    <Link href="/login" className="text-sm text-blue-600">Back to Login</Link>
                 </div>
             </div>
         </div>
