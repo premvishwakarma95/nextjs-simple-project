@@ -5,4 +5,5 @@ export const authApi: any = {
     loginApi: `${API_URL}/auth/login`,
     verfiyEmailApi: `${API_URL}/auth/verify-email`,
     forgotPasswordApi: `${API_URL}/auth/forgot-password`,
+    resetPasswordApi: `${API_URL}/auth/reset-password`,
 }
