@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { authApi } from "@/services/apis";
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Register() {
     const [registerData, setRegisterData] = useState<registerData>({ name: '', email: '', number: '', password: '' });
@@ -35,7 +36,7 @@ export default function Register() {
     }
     return (
         <div className='min-h-[91vh] min-w-full flex justify-center items-center bg-white text-gray-900'>
-            <div className='min-w-[400px] p-4 rounded shadow-2xl'>
+            <div className='min-w-[400px] p-6 rounded shadow-2xl'>
                 <h1 className='text-center text-gray-900 text-xl font-semibold mb-4'>Register</h1>
                 <div className='mb-3'>
                     <label className='text-gray-900 text-[16px]'>Enter full name <span className='text-red-500'>*</span></label>
@@ -54,7 +55,10 @@ export default function Register() {
                     <input type='password' name='password' value={registerData.password} onChange={onchageFun} placeholder='enter your password' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
                 <div className='flex justify-center'>
-                    <button onClick={register} className='rounded p-2 bg-blue-600 text-white'>Submit</button>
+                    <button onClick={register} className='rounded py-2 px-4 bg-blue-600 text-white mt-2'>Submit</button>
+                </div>
+                <div>
+                    <p className="text-center mt-4 text-gray-700">Already have an account? <Link href="/login" className="text-blue-600">Login</Link></p>
                 </div>
             </div>
         </div>

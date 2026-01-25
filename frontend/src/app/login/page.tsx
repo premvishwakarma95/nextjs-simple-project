@@ -5,6 +5,7 @@ import { authApi } from "@/services/apis";
 import toast from 'react-hot-toast';
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function page() {
     const [userData, setUserData] = useState<authData>({ email: '', password: '' });
@@ -40,7 +41,7 @@ export default function page() {
 
     return (
         <div className='min-w-full min-h-[91vh] flex justify-center items-center bg-white'>
-            <div className='max-w-[400px] p-4 rounded shadow-2xl bg-white'>
+            <div className='max-w-[400px] p-6 rounded shadow-2xl bg-white'>
                 <h1 className='text-center text-gray-900 text-xl font-semibold'>Login</h1>
                 <div className='my-5'>
                     <div>
@@ -51,9 +52,15 @@ export default function page() {
                         <label className='text-gray-900 text-[16px]'>Enter password <span className='text-red-500'>*</span></label>
                         <input type='password' name="password" value={userData.password} onChange={onChangeFunction} placeholder='enter your password' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
                     </div>
+                    <div className="flex justify-end">
+                        <Link href="/forgot-password" className="text-sm text-blue-600 float-right mt-2">Forgot Password?</Link>
+                    </div>
                 </div>
                 <div className='flex justify-center'>
-                    <button onClick={login} className='rounded p-2 bg-blue-600 text-white'>Submit</button>
+                    <button onClick={login} className='rounded py-2 px-4 bg-blue-600 text-white'>Submit</button>
+                </div>
+                <div>
+                    <p className="text-center mt-4 text-gray-700">Don't have an account? <Link href="/register" className="text-blue-600">Register</Link></p>
                 </div>
             </div>
         </div>
