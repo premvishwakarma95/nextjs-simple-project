@@ -43,7 +43,7 @@ export default function page() {
                 <div className='my-5'>
                     <p className="text-center text-gray-700 mb-4 text-sm">Enter your email and we'll send you a link to reset your password.</p>
                     <div className="mt-4">
-                        <label className='text-gray-900 text-[16px]'>Enter email <span className='text-red-500'>*</span></label>
+                        <label className="text-sm text-gray-700">Enter email <span className='text-red-500'>*</span></label>
                         <input type='email' name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder='Enter your email' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
                     </div>
                 </div>

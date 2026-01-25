@@ -43,19 +43,19 @@ export default function Register() {
             <div className='min-w-[400px] p-6 rounded shadow-2xl'>
                 <h1 className='text-center text-gray-900 text-xl font-semibold mb-4'>Register</h1>
                 <div className='mb-3'>
-                    <label className='text-gray-900 text-[16px]'>Enter full name <span className='text-red-500'>*</span></label>
+                    <label className="text-sm text-gray-700">Enter full name <span className='text-red-500'>*</span></label>
                     <input type='text' name='name' value={registerData.name} onChange={onchageFun} placeholder='Enter your full name' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
                 <div className='mb-3'>
-                    <label className='text-gray-900 text-[16px]'>Enter email <span className='text-red-500'>*</span></label>
+                    <label className="text-sm text-gray-700">Enter email <span className='text-red-500'>*</span></label>
                     <input type='email' name='email' value={registerData.email} onChange={onchageFun} placeholder='Enter your email' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
                 <div className='mb-3'>
-                    <label className='text-gray-900 text-[16px]'>Enter number <span className='text-red-500'>*</span></label>
+                    <label className="text-sm text-gray-700">Enter number <span className='text-red-500'>*</span></label>
                     <input type='number' name='number' value={registerData.number} onChange={onchageFun} placeholder='Enter your number' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
                 <div className='mb-3'>
-                    <label className='text-gray-900 text-[16px]'>Enter password <span className='text-red-500'>*</span></label>
+                    <label className="text-sm text-gray-700">Enter password <span className='text-red-500'>*</span></label>
                     <input type='password' name='password' value={registerData.password} onChange={onchageFun} placeholder='Enter your password' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
                 <div className="flex justify-center">
