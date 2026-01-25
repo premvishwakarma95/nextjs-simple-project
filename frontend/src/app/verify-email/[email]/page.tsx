@@ -1,6 +1,5 @@
 'use client'
 import { useState } from "react"
-import { authData } from "@/lib/type";
 import { authApi } from "@/services/apis";
 import toast from 'react-hot-toast';
 import axios from "axios";
@@ -11,24 +10,19 @@ interface PageProps {
 }
 
 export default function EmailVerify({ params }: PageProps) {
-    const [code, setCode] = useState<number>(null);
+    const [code, setCode] = useState<number | null>(null);
+    const [loader, setLoader] = useState<boolean>(false);
 
     const { email } = params;
     const router = useRouter();
 
-    const onChangeFunction = (e: any) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value });
-    }
-
-    const login = async () => {
+    const verfiyEmail = async () => {
         try {
-            if (!userData.email || !userData.password) {
-                return toast.error('please provide email and password');
-            } else if (!userData.email.includes('@')) {
-                return toast.error('please provide valid email');
+            if (!code) {
+                return toast.error('please provide code');
             }
-
-            const response: any = await axios.post(authApi.loginApi, userData);
+            setLoader(true);
+            const response: any = await axios.post(authApi.verfiyEmailApi, { email, code });
 
             if (response?.data?.success) {
                 let authData = response.data;
@@ -40,25 +34,39 @@ export default function EmailVerify({ params }: PageProps) {
         } catch (error: any) {
             console.log(error);
             toast.error(error?.response?.data?.message || 'server error');
+        } finally {
+            setLoader(false);
         }
     }
 
     return (
         <div className='min-w-full min-h-[91vh] flex justify-center items-center bg-white'>
-            <div className='max-w-[400px] p-4 rounded shadow-2xl bg-white'>
-                <h1 className='text-center text-gray-900 text-xl font-semibold'>Login</h1>
+            <div className='max-w-[400px] p-6 rounded shadow-2xl bg-white'>
+                <h1 className='text-center text-gray-900 text-xl font-semibold'>Verify Email</h1>
                 <div className='my-5'>
                     <div>
-                        <label className='text-gray-900 text-[16px]'>Enter email <span className='text-red-500'>*</span></label>
-                        <input type='email' name="email" value={userData.email} onChange={onChangeFunction} placeholder='enter your email' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
-                    </div>
-                    <div className='mt-3'>
-                        <label className='text-gray-900 text-[16px]'>Enter password <span className='text-red-500'>*</span></label>
-                        <input type='password' name="password" value={userData.password} onChange={onChangeFunction} placeholder='enter your password' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
+                        <label className='text-gray-900 text-[16px]'>Enter code <span className='text-red-500'>*</span></label>
+                        <input type='number' name="code" value={code || ''} onChange={(e: any) => setCode(e.target.value)} placeholder='Enter your code' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
                     </div>
                 </div>
-                <div className='flex justify-center'>
-                    <button onClick={login} className='rounded p-2 bg-blue-600 text-white'>Submit</button>
+                <div className="flex justify-center">
+                    <button
+                        onClick={verfiyEmail}
+                        disabled={loader}
+                        className={`flex items-center justify-center gap-2 rounded-md bg-blue-600 px-6 py-2 text-white font-medium
+      transition-all duration-200
+      hover:bg-blue-700
+      disabled:cursor-not-allowed disabled:opacity-70`}
+                    >
+                        {loader ? (
+                            <>
+                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                                Processing...
+                            </>
+                        ) : (
+                            "Submit"
+                        )}
+                    </button>
                 </div>
             </div>
         </div>

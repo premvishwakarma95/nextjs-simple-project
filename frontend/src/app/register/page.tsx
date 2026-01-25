@@ -10,6 +10,7 @@ import Link from 'next/link';
 
 export default function Register() {
     const [registerData, setRegisterData] = useState<registerData>({ name: '', email: '', number: '', password: '' });
+    const [loader, setLoader] = useState<boolean>(false);
 
     const router = useRouter();
 
@@ -20,18 +21,21 @@ export default function Register() {
     async function register() {
         try {
             if (!registerData.name || !registerData.email || !registerData.number || !registerData.password) {
-                toast.error('please provide all value');
-            } else if (String(registerData.number).length == 10) {
-                toast.error('please provide correct number');
+                return toast.error('please provide all value');
+            } else if (String(registerData.number).length !== 10) {
+                return toast.error('please provide correct number');
             }
+            setLoader(true);
             const res = await axios.post(authApi.registerApi, registerData);
             let data = res.data;
             if (data.success) {
                 toast.success(data.message || 'registered successfully now please check you email');
-                router.replace('/verify-email')
+                router.replace(`/verify-email/${registerData.email}`)
             }
         } catch (error: any) {
             toast.error(error?.response?.data?.message || 'server error')
+        } finally {
+            setLoader(false);
         }
     }
     return (
@@ -40,22 +44,38 @@ export default function Register() {
                 <h1 className='text-center text-gray-900 text-xl font-semibold mb-4'>Register</h1>
                 <div className='mb-3'>
                     <label className='text-gray-900 text-[16px]'>Enter full name <span className='text-red-500'>*</span></label>
-                    <input type='text' name='name' value={registerData.name} onChange={onchageFun} placeholder='enter your full name' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
+                    <input type='text' name='name' value={registerData.name} onChange={onchageFun} placeholder='Enter your full name' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
                 <div className='mb-3'>
                     <label className='text-gray-900 text-[16px]'>Enter email <span className='text-red-500'>*</span></label>
-                    <input type='email' name='email' value={registerData.email} onChange={onchageFun} placeholder='enter your email' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
+                    <input type='email' name='email' value={registerData.email} onChange={onchageFun} placeholder='Enter your email' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
                 <div className='mb-3'>
                     <label className='text-gray-900 text-[16px]'>Enter number <span className='text-red-500'>*</span></label>
-                    <input type='number' name='number' value={registerData.number} onChange={onchageFun} placeholder='enter your number' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
+                    <input type='number' name='number' value={registerData.number} onChange={onchageFun} placeholder='Enter your number' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
                 <div className='mb-3'>
                     <label className='text-gray-900 text-[16px]'>Enter password <span className='text-red-500'>*</span></label>
-                    <input type='password' name='password' value={registerData.password} onChange={onchageFun} placeholder='enter your password' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
+                    <input type='password' name='password' value={registerData.password} onChange={onchageFun} placeholder='Enter your password' className='p-2 rounded border text-gray-700 w-full focus:outline-none' />
                 </div>
-                <div className='flex justify-center'>
-                    <button onClick={register} className='rounded py-2 px-4 bg-blue-600 text-white mt-2'>Submit</button>
+                <div className="flex justify-center">
+                    <button
+                        onClick={register}
+                        disabled={loader}
+                        className={`flex items-center justify-center gap-2 rounded-md bg-blue-600 px-6 py-2 text-white font-medium
+      transition-all duration-200
+      hover:bg-blue-700
+      disabled:cursor-not-allowed disabled:opacity-70`}
+                    >
+                        {loader ? (
+                            <>
+                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                                Processing...
+                            </>
+                        ) : (
+                            "Submit"
+                        )}
+                    </button>
                 </div>
                 <div>
                     <p className="text-center mt-4 text-gray-700">Already have an account? <Link href="/login" className="text-blue-600">Login</Link></p>
