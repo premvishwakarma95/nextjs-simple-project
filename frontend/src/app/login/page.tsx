@@ -49,11 +49,11 @@ export default function page() {
                 <div className='my-5'>
                     <div>
                         <label className="text-sm text-gray-700">Enter email <span className='text-red-500'>*</span></label>
-                        <input type='email' name="email" value={userData.email} onChange={onChangeFunction} placeholder='Enter your email' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
+                        <input type='email' name="email" value={userData.email} onChange={onChangeFunction} placeholder='Enter your email' className="mt-1 rounded p-2 w-full text-black border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
                     <div className='mt-3'>
                         <label className="text-sm text-gray-700">Enter password <span className='text-red-500'>*</span></label>
-                        <input type='password' name="password" value={userData.password} onChange={onChangeFunction} placeholder='Enter your password' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
+                        <input type='password' name="password" value={userData.password} onChange={onChangeFunction} placeholder='Enter your password' className="mt-1 rounded p-2 w-full text-black border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
                     <div className="flex justify-end">
                         <Link href="/forgot-password" className="text-sm text-blue-600 float-right mt-2">Forgot Password?</Link>

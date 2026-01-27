@@ -44,7 +44,7 @@ export default function page() {
                     <p className="text-center text-gray-700 mb-4 text-sm">Enter your email and we'll send you a link to reset your password.</p>
                     <div className="mt-4">
                         <label className="text-sm text-gray-700">Enter email <span className='text-red-500'>*</span></label>
-                        <input type='email' name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder='Enter your email' className='rounded p-2 w-full text-black border border-gray-500 focus:outline-none' />
+                        <input type='email' name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder='Enter your email' className="mt-1 rounded p-2 w-full text-black border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
                 </div>
                 <div className="flex justify-center">

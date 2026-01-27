@@ -64,7 +64,7 @@ export default function ResetPasswordPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter new password"
-                            className="mt-1 w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                            className="mt-1 rounded p-2 w-full text-black border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
@@ -75,7 +75,7 @@ export default function ResetPasswordPage() {
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             placeholder="Confirm password"
-                            className="mt-1 w-full text-gray-700 rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 rounded p-2 w-full text-black border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
