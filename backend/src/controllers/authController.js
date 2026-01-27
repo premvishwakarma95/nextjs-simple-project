@@ -28,6 +28,7 @@ const register = async (req, res) => {
 
         return res.status(200).json({ success: true, message: 'you registered successfully now please check your mail' });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ success: false, message: 'server error' });
     }
 }
@@ -46,6 +47,7 @@ const verifyUser = async (req, res) => {
             return res.status(200).json({ success: true, message: 'email verified successfully' });
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ success: false, message: 'server error' });
     }
 }
@@ -79,6 +81,7 @@ const login = async (req, res) => {
 
         return res.status(200).json({ success: true, message: 'logged in successfully', token, userId: isEmailExist._id });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ success: false, message: 'server error' });
     }
 }
@@ -100,8 +103,31 @@ const forgotPassword = async (req, res) => {
         sendForgotPasswordEmail(email, resetLink);
         return res.status(200).json({ success: true, message: 'we have sent email to you please check your inbox' });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ success: false, message: 'server error' });
     }
 }
 
-module.exports = { register, verifyUser, login, forgotPassword }
+const resetPassword = async (req, res) => {
+    try {
+        const { token, password } = req.body;
+        const newPassword = password;
+        if (!token || !newPassword) {
+            return res.status(400).json({ success: false, message: 'token and new password are required' });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const hashPassword = bcrypt.hashSync(newPassword, 10);
+
+        const user = await users.findByIdAndUpdate(decoded.id, { password: hashPassword });
+
+        if (user) {
+            return res.status(200).json({ success: true, message: 'password reset successfully' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: 'server error' });
+    }
+}
+
+module.exports = { register, verifyUser, login, forgotPassword, resetPassword }
